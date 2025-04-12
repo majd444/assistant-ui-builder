@@ -1,10 +1,13 @@
+
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, X, Edit } from "lucide-react";
+import { InfoIcon, PlusCircle, X } from "lucide-react";
 
 const BotConfigurationSection = () => {
   const [botName, setBotName] = useState("Assistant");
@@ -24,7 +27,6 @@ const BotConfigurationSection = () => {
   const [preConversationInputs, setPreConversationInputs] = useState([
     { id: 1, label: "Name", placeholder: "Please enter your name", required: true }
   ]);
-  const [editingInputId, setEditingInputId] = useState<number | null>(null);
 
   const addPreConversationInput = () => {
     const newId = preConversationInputs.length > 0 
@@ -49,10 +51,6 @@ const BotConfigurationSection = () => {
     setPreConversationInputs(
       preConversationInputs.filter(input => input.id !== id)
     );
-  };
-
-  const toggleEditMode = (id: number) => {
-    setEditingInputId(editingInputId === id ? null : id);
   };
 
   return <div className="space-y-8">
@@ -99,66 +97,46 @@ const BotConfigurationSection = () => {
             <div key={input.id} className="p-4 border rounded-md space-y-4 bg-background">
               <div className="flex justify-between items-center">
                 <h4 className="font-medium">Input Field #{input.id}</h4>
-                <div className="flex items-center space-x-2">
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    onClick={() => toggleEditMode(input.id)}
-                    className="h-8 w-8"
-                    title={editingInputId === input.id ? "Cancel Editing" : "Edit"}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    onClick={() => removePreConversationInput(input.id)}
-                    className="h-8 w-8"
-                    title="Remove Input"
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => removePreConversationInput(input.id)}
+                  className="h-8 w-8"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
               </div>
               
-              {editingInputId === input.id ? (
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor={`input-label-${input.id}`}>Label</Label>
-                    <Input 
-                      id={`input-label-${input.id}`} 
-                      value={input.label} 
-                      onChange={e => updatePreConversationInput(input.id, 'label', e.target.value)} 
-                      placeholder="e.g., Name, Email, etc." 
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor={`input-placeholder-${input.id}`}>Placeholder</Label>
-                    <Input 
-                      id={`input-placeholder-${input.id}`} 
-                      value={input.placeholder} 
-                      onChange={e => updatePreConversationInput(input.id, 'placeholder', e.target.value)} 
-                      placeholder="e.g., Please enter your name" 
-                    />
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <Switch 
-                      id={`input-required-${input.id}`} 
-                      checked={input.required} 
-                      onCheckedChange={value => updatePreConversationInput(input.id, 'required', value)} 
-                    />
-                    <Label htmlFor={`input-required-${input.id}`}>Required field</Label>
-                  </div>
-                </div>
-              ) : (
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <p><strong>Label:</strong> {input.label || 'Not set'}</p>
-                  <p><strong>Placeholder:</strong> {input.placeholder || 'Not set'}</p>
-                  <p><strong>Required:</strong> {input.required ? 'Yes' : 'No'}</p>
+                  <Label htmlFor={`input-label-${input.id}`}>Label</Label>
+                  <Input 
+                    id={`input-label-${input.id}`} 
+                    value={input.label} 
+                    onChange={e => updatePreConversationInput(input.id, 'label', e.target.value)} 
+                    placeholder="e.g., Name, Email, etc." 
+                  />
                 </div>
-              )}
+                
+                <div className="space-y-2">
+                  <Label htmlFor={`input-placeholder-${input.id}`}>Placeholder</Label>
+                  <Input 
+                    id={`input-placeholder-${input.id}`} 
+                    value={input.placeholder} 
+                    onChange={e => updatePreConversationInput(input.id, 'placeholder', e.target.value)} 
+                    placeholder="e.g., Please enter your name" 
+                  />
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  <Switch 
+                    id={`input-required-${input.id}`} 
+                    checked={input.required} 
+                    onCheckedChange={value => updatePreConversationInput(input.id, 'required', value)} 
+                  />
+                  <Label htmlFor={`input-required-${input.id}`}>Required field</Label>
+                </div>
+              </div>
             </div>
           ))}
           
@@ -338,5 +316,4 @@ const BotConfigurationSection = () => {
       <Button className="w-full mt-8">Save Configuration</Button>
     </div>;
 };
-
 export default BotConfigurationSection;
