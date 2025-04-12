@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,7 +7,8 @@ import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
-import { InfoIcon } from "lucide-react";
+import { InfoIcon, PlusCircle, X } from "lucide-react";
+
 const BotConfigurationSection = () => {
   const [botName, setBotName] = useState("Assistant");
   const [welcomeMessage, setWelcomeMessage] = useState("Hello! How can I help you today?");
@@ -22,6 +24,35 @@ const BotConfigurationSection = () => {
   const [location, setLocation] = useState("");
   const [notifications, setNotifications] = useState(false);
   const [notificationType, setNotificationType] = useState("sms");
+  const [preConversationInputs, setPreConversationInputs] = useState([
+    { id: 1, label: "Name", placeholder: "Please enter your name", required: true }
+  ]);
+
+  const addPreConversationInput = () => {
+    const newId = preConversationInputs.length > 0 
+      ? Math.max(...preConversationInputs.map(input => input.id)) + 1 
+      : 1;
+    
+    setPreConversationInputs([
+      ...preConversationInputs, 
+      { id: newId, label: "", placeholder: "", required: false }
+    ]);
+  };
+
+  const updatePreConversationInput = (id, field, value) => {
+    setPreConversationInputs(
+      preConversationInputs.map(input => 
+        input.id === id ? { ...input, [field]: value } : input
+      )
+    );
+  };
+
+  const removePreConversationInput = (id) => {
+    setPreConversationInputs(
+      preConversationInputs.filter(input => input.id !== id)
+    );
+  };
+
   return <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold mb-4">Create Your Chatbot</h2>
@@ -39,7 +70,10 @@ const BotConfigurationSection = () => {
           </div>
           
           {/* Branding Text */}
-          
+          <div className="space-y-2">
+            <Label htmlFor="brandingText">Branding Text</Label>
+            <Input id="brandingText" value={brandingText} onChange={e => setBrandingText(e.target.value)} placeholder="Enter branding text" />
+          </div>
           
           {/* Stream AI Response */}
           <div className="flex items-center justify-between">
@@ -49,6 +83,71 @@ const BotConfigurationSection = () => {
             </div>
             <Switch checked={streamResponse} onCheckedChange={setStreamResponse} />
           </div>
+        </div>
+      </div>
+      
+      {/* Pre-conversation Inputs Section */}
+      <div>
+        <h3 className="text-xl font-bold mb-4">Pre-conversation Inputs</h3>
+        <p className="text-sm text-muted-foreground mb-4">
+          Add fields that users must fill in before starting a conversation with your chatbot.
+        </p>
+        <div className="space-y-4">
+          {preConversationInputs.map((input) => (
+            <div key={input.id} className="p-4 border rounded-md space-y-4 bg-background">
+              <div className="flex justify-between items-center">
+                <h4 className="font-medium">Input Field #{input.id}</h4>
+                <Button 
+                  variant="ghost" 
+                  size="icon" 
+                  onClick={() => removePreConversationInput(input.id)}
+                  className="h-8 w-8"
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </div>
+              
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor={`input-label-${input.id}`}>Label</Label>
+                  <Input 
+                    id={`input-label-${input.id}`} 
+                    value={input.label} 
+                    onChange={e => updatePreConversationInput(input.id, 'label', e.target.value)} 
+                    placeholder="e.g., Name, Email, etc." 
+                  />
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor={`input-placeholder-${input.id}`}>Placeholder</Label>
+                  <Input 
+                    id={`input-placeholder-${input.id}`} 
+                    value={input.placeholder} 
+                    onChange={e => updatePreConversationInput(input.id, 'placeholder', e.target.value)} 
+                    placeholder="e.g., Please enter your name" 
+                  />
+                </div>
+                
+                <div className="flex items-center space-x-2">
+                  <Switch 
+                    id={`input-required-${input.id}`} 
+                    checked={input.required} 
+                    onCheckedChange={value => updatePreConversationInput(input.id, 'required', value)} 
+                  />
+                  <Label htmlFor={`input-required-${input.id}`}>Required field</Label>
+                </div>
+              </div>
+            </div>
+          ))}
+          
+          <Button 
+            variant="outline" 
+            onClick={addPreConversationInput} 
+            className="w-full"
+          >
+            <PlusCircle className="mr-2 h-4 w-4" />
+            Add New Input Field
+          </Button>
         </div>
       </div>
       
@@ -146,7 +245,7 @@ const BotConfigurationSection = () => {
       </div>
       
       <div>
-        <h3 className="text-xl font-bold mb-4">Time Zone </h3>
+        <h3 className="text-xl font-bold mb-4">Time Zone & Location</h3>
         <div className="space-y-6">
           {/* Time Zone */}
           <div className="space-y-2">
@@ -166,7 +265,18 @@ const BotConfigurationSection = () => {
           </div>
           
           {/* Location */}
-          
+          <div className="space-y-2">
+            <Label htmlFor="location">Location</Label>
+            <Input 
+              id="location" 
+              value={location} 
+              onChange={e => setLocation(e.target.value)} 
+              placeholder="e.g., New York, USA" 
+            />
+            <p className="text-sm text-muted-foreground">
+              Helps the chatbot provide location-specific information
+            </p>
+          </div>
         </div>
       </div>
       
