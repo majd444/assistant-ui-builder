@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,7 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
 import { InfoIcon } from "lucide-react";
-
 const BotConfigurationSection = () => {
   const [botName, setBotName] = useState("Assistant");
   const [welcomeMessage, setWelcomeMessage] = useState("Hello! How can I help you today?");
@@ -24,45 +22,24 @@ const BotConfigurationSection = () => {
   const [location, setLocation] = useState("");
   const [notifications, setNotifications] = useState(false);
   const [notificationType, setNotificationType] = useState("sms");
-
-  return (
-    <div className="space-y-8">
+  return <div className="space-y-8">
       <div>
         <h2 className="text-2xl font-bold mb-4">Create Your Chatbot</h2>
         <div className="space-y-6">
           {/* Chatbot Name */}
           <div className="space-y-2">
             <Label htmlFor="botName">Chatbot Name</Label>
-            <Input 
-              id="botName" 
-              value={botName} 
-              onChange={(e) => setBotName(e.target.value)} 
-              placeholder="Enter chatbot name"
-            />
+            <Input id="botName" value={botName} onChange={e => setBotName(e.target.value)} placeholder="Enter chatbot name" />
           </div>
           
           {/* Welcome Message */}
           <div className="space-y-2">
             <Label htmlFor="welcomeMessage">Welcome Message</Label>
-            <Textarea 
-              id="welcomeMessage" 
-              value={welcomeMessage} 
-              onChange={(e) => setWelcomeMessage(e.target.value)} 
-              placeholder="Enter welcome message"
-              rows={3}
-            />
+            <Textarea id="welcomeMessage" value={welcomeMessage} onChange={e => setWelcomeMessage(e.target.value)} placeholder="Enter welcome message" rows={3} />
           </div>
           
           {/* Branding Text */}
-          <div className="space-y-2">
-            <Label htmlFor="brandingText">Branding Text</Label>
-            <Input 
-              id="brandingText" 
-              value={brandingText} 
-              onChange={(e) => setBrandingText(e.target.value)} 
-              placeholder="Enter branding text"
-            />
-          </div>
+          
           
           {/* Stream AI Response */}
           <div className="flex items-center justify-between">
@@ -70,10 +47,7 @@ const BotConfigurationSection = () => {
               <h3 className="font-medium">Stream AI Response</h3>
               <p className="text-sm text-muted-foreground">Enable streaming text in AI response.</p>
             </div>
-            <Switch 
-              checked={streamResponse} 
-              onCheckedChange={setStreamResponse} 
-            />
+            <Switch checked={streamResponse} onCheckedChange={setStreamResponse} />
           </div>
         </div>
       </div>
@@ -105,10 +79,7 @@ const BotConfigurationSection = () => {
               <h3 className="font-medium">Adapt to User Language</h3>
               <p className="text-sm text-muted-foreground">Adapt to user's language after 1-2 messages in a different language</p>
             </div>
-            <Switch 
-              checked={adaptToUser} 
-              onCheckedChange={setAdaptToUser} 
-            />
+            <Switch checked={adaptToUser} onCheckedChange={setAdaptToUser} />
           </div>
         </div>
       </div>
@@ -135,13 +106,7 @@ const BotConfigurationSection = () => {
           {/* Prompt */}
           <div className="space-y-2">
             <Label htmlFor="prompt">Prompt</Label>
-            <Textarea 
-              id="prompt" 
-              value={prompt} 
-              onChange={(e) => setPrompt(e.target.value)} 
-              placeholder="Instructions for how your chatbot should behave"
-              rows={4}
-            />
+            <Textarea id="prompt" value={prompt} onChange={e => setPrompt(e.target.value)} placeholder="Instructions for how your chatbot should behave" rows={4} />
             <p className="text-sm text-muted-foreground">
               Instructions for how your chatbot should behave
             </p>
@@ -175,16 +140,13 @@ const BotConfigurationSection = () => {
               <h3 className="font-medium">Random response speed for each message</h3>
               <p className="text-sm text-muted-foreground">Vary response timing to appear more natural</p>
             </div>
-            <Switch 
-              checked={randomSpeed} 
-              onCheckedChange={setRandomSpeed} 
-            />
+            <Switch checked={randomSpeed} onCheckedChange={setRandomSpeed} />
           </div>
         </div>
       </div>
       
       <div>
-        <h3 className="text-xl font-bold mb-4">Time Zone & Location</h3>
+        <h3 className="text-xl font-bold mb-4">Time Zone </h3>
         <div className="space-y-6">
           {/* Time Zone */}
           <div className="space-y-2">
@@ -204,18 +166,7 @@ const BotConfigurationSection = () => {
           </div>
           
           {/* Location */}
-          <div className="space-y-2">
-            <Label htmlFor="location">Location</Label>
-            <Input 
-              id="location" 
-              value={location} 
-              onChange={(e) => setLocation(e.target.value)} 
-              placeholder="e.g., New York, USA"
-            />
-            <p className="text-sm text-muted-foreground">
-              e.g., New York, USA
-            </p>
-          </div>
+          
         </div>
       </div>
       
@@ -228,10 +179,7 @@ const BotConfigurationSection = () => {
               <h3 className="font-medium">Enable notifications</h3>
               <p className="text-sm text-muted-foreground">Send notifications for new messages</p>
             </div>
-            <Switch 
-              checked={notifications} 
-              onCheckedChange={setNotifications} 
-            />
+            <Switch checked={notifications} onCheckedChange={setNotifications} />
           </div>
           
           {/* Notification Type */}
@@ -256,8 +204,6 @@ const BotConfigurationSection = () => {
       </div>
       
       <Button className="w-full mt-8">Save Configuration</Button>
-    </div>
-  );
+    </div>;
 };
-
 export default BotConfigurationSection;
